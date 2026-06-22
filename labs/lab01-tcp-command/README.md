@@ -178,9 +178,13 @@ npm run test:watch
 Answer the following questions in your submission:
 
 1. What is the difference between the client and the server?
+The server connects to a port and waits and listens. It never initiates. The server always initiate the connection between the client and the server. It opens the connection between the two and then it sends commands and reads the replies.
 2. Why does the server need to keep running after handling one request?
+Because there is often going to be more than request. There will usually be multiple clients wanting to connect even after you're done as well.
 3. What happens if two clients connect at the same time?
+Node servers will allow both clients to connect, jsut on separate socket objects.
 4. How is this different from HTTP?
+HTTP runs over a TCP connection, so it falls under that umbrella.
 
 ## Submission
 
