@@ -38,17 +38,57 @@ export function readJsonBody(req) {
 }
 
 export function handleCalculate(body) {
-    // TODO: Validate that operation, a, and b are present.
-    // TODO: Validate that a and b are numbers.
-    // TODO: Support add, subtract, multiply, and divide.
-    // TODO: Return an error for unsupported operations.
-    // TODO: Return an error for division by zero.
+    const { operation, a, b } = body;
+
+    if (operation === undefined || a === undefined || b === undefined) {
+        return {
+            statusCode: 400,
+            response: { error: "operation, a, and b are required" }
+        };
+    }
+
+    if (typeof a !== "number" || typeof b !== "number") {
+        return {
+            statusCode: 400,
+            response: { error: "a and b must be numbers" }
+        };
+    }
+
+    let result;
+
+    switch (operation) {
+        case "add":
+            result = a + b;
+            break;
+
+        case "subtract":
+            result = a - b;
+            break;
+
+        case "multiply":
+            result = a * b;
+            break;
+
+        case "divide":
+            if (b === 0) {
+                return {
+                    statusCode: 400,
+                    response: { error: "Cannot divide by zero" }
+                };
+            }
+            result = a / b;
+            break;
+
+        default:
+            return {
+                statusCode: 400,
+                response: { error: `Unsupported operation: ${operation}` }
+            };
+    }
 
     return {
-        statusCode: 501,
-        response: {
-            error: "Calculation not implemented yet"
-        }
+        statusCode: 200,
+        response: { operation, a, b, result }
     };
 }
 
